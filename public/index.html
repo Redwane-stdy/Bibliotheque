@@ -734,22 +734,61 @@ async function payWithPhantom() {
             }, 1000);
         }
 
-        // Fonction d'envoi d'email
-        function sendEmail(event) {
+        // 📧 CONFIGURATION EMAILJS
+        // REMPLACEZ ces valeurs par les vôtres depuis EmailJS Dashboard
+        const EMAILJS_CONFIG = {
+            PUBLIC_KEY: 'FzbsUV6_XOZQwGATY',        // Ex: 'user_abc123xyz'
+            SERVICE_ID: 'bibliohardware',        // Ex: 'service_gmail'
+            TEMPLATE_ID: 'template_qjieviq'       // Ex: 'template_contact'
+        };
+
+        // Initialiser EmailJS
+        (function() {
+            emailjs.init({
+                publicKey: EMAILJS_CONFIG.PUBLIC_KEY,
+            });
+        })();
+
+        // Configuration API Backend (pour les cryptos et stats)
+        const API_BASE_URL = window.location.hostname === 'localhost' 
+            ? 'http://localhost:3000' 
+            : 'https://bibliotheque-j16b.vercel.app'; // REMPLACER par votre URL Vercel
+
+        // Fonction d'envoi d'email avec EmailJS
+        async function sendEmail(event) {
             event.preventDefault();
             const form = event.target;
-            const formData = new FormData(form);
+            const submitButton = form.querySelector('button[type="submit"]');
             
-            // CONFIGURATION EMAILJS ou backend
-            // Pour l'instant, simulation
-            alert('Message envoyé ! Nous vous répondrons dans les plus brefs délais.');
-            form.reset();
+            // UI Loading
+            const originalText = submitButton.textContent;
+            submitButton.innerHTML = '<div class="loading"></div> Envoi en cours...';
+            submitButton.disabled = true;
             
-            // POUR IMPLEMENTATION RÉELLE:
-            // 1. Utiliser EmailJS: https://www.emailjs.com/
-            // 2. Ou créer un backend avec Node.js/Express
-            // 3. Ou utiliser un service comme Formspree
+            try {
+                // Envoi via EmailJS
+                const result = await emailjs.sendForm(
+                    EMAILJS_CONFIG.SERVICE_ID,
+                    EMAILJS_CONFIG.TEMPLATE_ID,
+                    form,
+                    {
+                        publicKey: EMAILJS_CONFIG.PUBLIC_KEY,
+                    }
+                );
+                
+                console.log('Email envoyé:', result);
+                alert('✅ Message envoyé avec succès ! Nous vous répondrons rapidement.');
+                form.reset();
+                
+            } catch (error) {
+                console.error('Erreur EmailJS:', error);
+                alert('❌ Erreur lors de l\'envoi: ' + error.text || error.message);
+            } finally {
+                submitButton.textContent = originalText;
+                submitButton.disabled = false;
+            }
         }
+
 
         // Smooth scroll pour les liens
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
