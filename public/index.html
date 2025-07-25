@@ -464,8 +464,9 @@
                 
                 <!-- STRIPE INTEGRATION -->
                 <button class="payment-button" onclick="payWithStripe()">
-                    Payer avec Stripe
+                    Payer avec Stripe (à venir)
                 </button>
+                
                 <!-- 
                 INSTRUCTIONS STRIPE:
                 1. Créer un compte Stripe
@@ -476,7 +477,7 @@
                 
                 <!-- PAYPAL INTEGRATION -->
                 <button class="payment-button" onclick="payWithPayPal()">
-                    Payer avec PayPal
+                    Payer avec PayPal (à venir)
                 </button>
                 <!-- 
                 INSTRUCTIONS PAYPAL:
@@ -487,7 +488,7 @@
                 
                 <!-- TIPEEE INTEGRATION -->
                 <button class="payment-button" onclick="payWithTipeee()">
-                    Soutenir sur Tipeee
+                    Soutenir sur Tipeee (à venir)
                 </button>
                 <!--
                 INSTRUCTIONS TIPEEE:
@@ -507,8 +508,7 @@
                     Payer avec MetaMask (ETH)
                 </button>
                 <div class="crypto-address">
-                    ETH: 0x742d35Cc6Bf8fE4D42f87887Fddd7Bf7b5B1c123
-                    <!-- REMPLACER par votre adresse Ethereum -->
+                    ETH: 0xa3fa920e528264651ef7d4082bdf2772059fd347
                 </div>
                 
                 <!-- SOLANA/PHANTOM -->
@@ -516,8 +516,7 @@
                     Payer avec Phantom (SOL)
                 </button>
                 <div class="crypto-address">
-                    SOL: 9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM
-                    <!-- REMPLACER par votre adresse Solana -->
+                    SOL: GZP5m2TSdnNxZHVkF6cgQpJnmFgYLBuSShWZ4NbKBVvq
                 </div>
             </div>
         </div>
@@ -551,7 +550,7 @@
     <footer class="footer">
         <p>&copy; 2025 Bibliothèque Hardware. Tous droits réservés.</p>
         <div>
-            <a href="https://github.com/VOTRE_USERNAME/bibliotheque-hardware" target="_blank">GitHub</a>
+            <a href="https://github.com/redwane-stdy/Bibliotheque" target="_blank">GitHub</a>
             <a href="#mentions">Mentions Légales</a>
             <a href="#privacy">Politique de Confidentialité</a>
         </div>
@@ -577,7 +576,7 @@
         // Fonction de paiement Stripe
         async function payWithStripe() {
             // CONFIGURATION STRIPE
-            const stripe = Stripe('pk_test_YOUR_STRIPE_PUBLIC_KEY'); // REMPLACER
+            const stripe = Stripe('pk_test_51RoqKE5FhshkNW9Gd9GSpF3RSAXuDM5M98LQVvQIrlrxbrOacVhYNBD62gpHY7iJhmb7jKF8w4j9O9Fi0Efi5XqB00RL7dO63f'); // REMPLACER
             
             try {
                 const response = await fetch('/create-payment-intent', {
@@ -629,58 +628,94 @@
         }
 
         // Fonction MetaMask (Ethereum)
-        async function payWithMetaMask() {
-            if (typeof window.ethereum !== 'undefined') {
-                try {
-                    await ethereum.request({ method: 'eth_requestAccounts' });
-                    const web3 = new Web3(window.ethereum);
-                    const accounts = await web3.eth.getAccounts();
-                    
-                    const transaction = {
-                        from: accounts[0],
-                        to: '0x742d35Cc6Bf8fE4D42f87887Fddd7Bf7b5B1c123', // VOTRE ADRESSE ETH
-                        value: web3.utils.toWei('0.01', 'ether'), // 0.01 ETH
-                        gas: 21000,
-                    };
-                    
-                    const txHash = await web3.eth.sendTransaction(transaction);
-                    alert('Transaction envoyée ! Hash: ' + txHash.transactionHash);
-                    updateDonationCounter();
-                } catch (error) {
-                    console.error('Erreur MetaMask:', error);
-                    alert('Erreur de transaction');
-                }
-            } else {
-                alert('MetaMask non détecté. Veuillez installer MetaMask.');
+async function payWithMetaMask() {
+    if (typeof window.ethereum !== 'undefined') {
+        try {
+            await ethereum.request({ method: 'eth_requestAccounts' });
+            const web3 = new Web3(window.ethereum);
+            const accounts = await web3.eth.getAccounts();
+
+            // Demander le montant à l'utilisateur
+            const montantInput = prompt("Entrez le montant à payer en ETH :");
+            const montantETH = parseFloat(montantInput);
+
+            if (isNaN(montantETH) || montantETH <= 0) {
+                alert("Montant invalide.");
+                return;
             }
+
+            // Création de la transaction
+            const transaction = {
+                from: accounts[0],
+                to: '0xa3fa920e528264651ef7d4082bdf2772059fd347', // ton adresse ETH ici
+                value: web3.utils.toWei(montantETH.toString(), 'ether'),
+                gas: 21000,
+            };
+
+            const txHash = await web3.eth.sendTransaction(transaction);
+            alert('Transaction envoyée ! Hash: ' + txHash.transactionHash);
+            updateDonationCounter();
+        } catch (error) {
+            console.error('Erreur MetaMask:', error);
+            alert('Erreur de transaction');
         }
+    } else {
+        alert('MetaMask non détecté. Veuillez installer MetaMask.');
+    }
+}
+
 
         // Fonction Phantom (Solana)
-        async function payWithPhantom() {
-            if (window.solana && window.solana.isPhantom) {
-                try {
-                    const resp = await window.solana.connect();
-                    const connection = new solanaWeb3.Connection('https://api.mainnet-beta.solana.com');
-                    
-                    const transaction = new solanaWeb3.Transaction().add(
-                        solanaWeb3.SystemProgram.transfer({
-                            fromPubkey: resp.publicKey,
-                            toPubkey: new solanaWeb3.PublicKey('9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM'),
-                            lamports: 10000000, // 0.01 SOL
-                        })
-                    );
-                    
-                    const signature = await window.solana.signAndSendTransaction(transaction);
-                    alert('Transaction Solana envoyée ! Signature: ' + signature.signature);
-                    updateDonationCounter();
-                } catch (error) {
-                    console.error('Erreur Phantom:', error);
-                    alert('Erreur de transaction Solana');
-                }
-            } else {
-                alert('Phantom Wallet non détecté. Veuillez installer Phantom.');
+async function payWithPhantom() {
+    if (window.solana && window.solana.isPhantom) {
+        try {
+            const resp = await window.solana.connect();
+            const connection = new solanaWeb3.Connection(
+                'https://mainnet.helius-rpc.com/?api-key=3899a7ac-f9d5-42bb-aca8-2ea4375a13c3',
+                'confirmed'
+            );
+
+            // Demande du montant à l'utilisateur
+            const montantInput = prompt("Entrez le montant à payer en SOL :");
+            const montantSOL = parseFloat(montantInput);
+
+            if (isNaN(montantSOL) || montantSOL <= 0) {
+                alert("Montant invalide.");
+                return;
             }
+
+            const lamports = Math.round(montantSOL * solanaWeb3.LAMPORTS_PER_SOL);
+
+            // Création de la transaction
+            const transaction = new solanaWeb3.Transaction().add(
+                solanaWeb3.SystemProgram.transfer({
+                    fromPubkey: resp.publicKey,
+                    toPubkey: new solanaWeb3.PublicKey('GZP5m2TSdnNxZHVkF6cgQpJnmFgYLBuSShWZ4NbKBVvq'),
+                    lamports: lamports,
+                })
+            );
+
+            // Récupération du blockhash
+            transaction.feePayer = resp.publicKey;
+            const { blockhash } = await connection.getLatestBlockhash();
+            transaction.recentBlockhash = blockhash;
+
+            // Signature + envoi
+            const signed = await window.solana.signTransaction(transaction);
+            const signature = await connection.sendRawTransaction(signed.serialize());
+            await connection.confirmTransaction(signature);
+
+            alert('Transaction Solana envoyée ! Signature: ' + signature);
+            updateDonationCounter();
+        } catch (error) {
+            console.error('Erreur Phantom:', error);
+            alert('Erreur de transaction Solana');
         }
+    } else {
+        alert('Phantom Wallet non détecté. Veuillez installer Phantom.');
+    }
+}
+
 
         // Mise à jour du compteur
         function updateDonationCounter() {

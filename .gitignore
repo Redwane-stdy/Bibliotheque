@@ -1,0 +1,28 @@
+# Dépendances
+node_modules/
+npm-debug.log*
+
+# Variables d'environnement
+.env
+
+# Logs
+*.log
+
+# Cache
+.cache/
+
+# Build
+dist/
+build/
+
+# IDE
+.vscode/settings.json
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporaires
+*.tmp
+*.temp
