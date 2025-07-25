@@ -1,0 +1,782 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bibliothèque Hardware - Soutenez l'apprentissage</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animations d'oiseaux */
+        .bird {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: fly 15s infinite linear;
+            z-index: 10;
+        }
+
+        .bird::before {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 8px;
+            background: inherit;
+            border-radius: 50%;
+            top: -3px;
+            left: 10px;
+            transform: rotate(-30deg);
+        }
+
+        .bird::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 8px;
+            background: inherit;
+            border-radius: 50%;
+            top: -3px;
+            right: 10px;
+            transform: rotate(30deg);
+            animation: flap 0.5s infinite alternate;
+        }
+
+        @keyframes fly {
+            0% { transform: translateX(-100px) translateY(0px); }
+            25% { transform: translateX(25vw) translateY(-20px); }
+            50% { transform: translateX(50vw) translateY(10px); }
+            75% { transform: translateX(75vw) translateY(-15px); }
+            100% { transform: translateX(calc(100vw + 100px)) translateY(0px); }
+        }
+
+        @keyframes flap {
+            0% { transform: rotate(30deg) scaleY(1); }
+            100% { transform: rotate(30deg) scaleY(0.5); }
+        }
+
+        .bird:nth-child(2) {
+            animation-delay: -5s;
+            top: 20%;
+            background: linear-gradient(45deg, #a8e6cf, #ffd93d);
+        }
+
+        .bird:nth-child(3) {
+            animation-delay: -10s;
+            top: 60%;
+            background: linear-gradient(45deg, #ff8a80, #81c784);
+        }
+
+        .bird:nth-child(4) {
+            animation-delay: -2s;
+            top: 80%;
+            background: linear-gradient(45deg, #ce93d8, #90caf9);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="%23ff6b6b" stop-opacity="0.1"/><stop offset="100%" stop-color="%234ecdc4" stop-opacity="0.05"/></radialGradient></defs><circle cx="200" cy="200" r="100" fill="url(%23a)"/><circle cx="800" cy="300" r="150" fill="url(%23a)"/><circle cx="300" cy="700" r="120" fill="url(%23a)"/><circle cx="900" cy="800" r="80" fill="url(%23a)"/></svg>') center/cover;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(2deg); }
+        }
+
+        .hero-content {
+            z-index: 5;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            animation: fadeInUp 1s ease-out 1s both;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #ff5252, #26a69a);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Sections */
+        .section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #333;
+            position: relative;
+        }
+
+        .section h2::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            margin: 20px auto;
+            border-radius: 2px;
+        }
+
+        /* Project Section */
+        .project {
+            background: #f8f9fa;
+        }
+
+        .project-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .project-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .book-image {
+            text-align: center;
+            position: relative;
+        }
+
+        .book-placeholder {
+            width: 300px;
+            height: 400px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            text-align: center;
+            margin: 0 auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .book-placeholder:hover {
+            transform: scale(1.05) rotateY(5deg);
+        }
+
+        /* Funding Section */
+        .funding {
+            background: white;
+        }
+
+        .payment-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .payment-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .payment-card:hover {
+            transform: translateY(-5px);
+            border-color: #4ecdc4;
+        }
+
+        .payment-card h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .payment-button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+
+        .payment-button:hover {
+            background: linear-gradient(45deg, #5a6fd8, #6a4190);
+            transform: scale(1.05);
+        }
+
+        .crypto-address {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            margin: 10px 0;
+            word-break: break-all;
+        }
+
+        .donation-counter {
+            text-align: center;
+            margin: 50px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            border-radius: 15px;
+            color: white;
+        }
+
+        .counter-amount {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .thank-you {
+            background: #f8f9fa;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4ecdc4;
+        }
+
+        /* Footer */
+        .footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .footer a {
+            color: #4ecdc4;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .project-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .payment-options {
+                grid-template-columns: 1fr;
+            }
+
+            .book-placeholder {
+                width: 250px;
+                height: 300px;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Loading animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Oiseaux animés -->
+    <div class="bird" style="top: 10%;"></div>
+    <div class="bird" style="top: 30%;"></div>
+    <div class="bird" style="top: 70%;"></div>
+    <div class="bird" style="top: 90%;"></div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Bibliothèque Hardware</h1>
+            <p>Soutenez la création d'une bibliothèque dédiée à l'apprentissage du hardware et des CPU modernes</p>
+            <a href="#funding" class="cta-button">Soutenir le projet</a>
+        </div>
+    </section>
+
+    <!-- Project Section -->
+    <section class="section project" id="project">
+        <h2>Le Projet</h2>
+        <div class="project-content">
+            <div class="project-text">
+                <p>Notre mission est de créer une bibliothèque spécialisée dans l'apprentissage du hardware informatique, accessible à tous les passionnés et étudiants.</p>
+                
+                <p>Le premier livre de cette collection sera <strong>"GPU Architecture: The Ultimate Guide to Building High-Performance Computing Systems"</strong>, un ouvrage fondamental pour comprendre le fonctionnement des processeurs modernes et l'architecture des systèmes haute performance.</p>
+                
+                <p>Cette bibliothèque permettra de démocratiser l'accès aux connaissances techniques avancées et de former la prochaine génération d'ingénieurs en hardware.</p>
+                
+                <p>Votre soutien nous aidera à acquérir ce premier ouvrage et à poser les bases d'une collection qui s'enrichira au fil du temps.</p>
+            </div>
+            <div class="book-image">
+                <div class="book-placeholder">
+                    <div>
+                        <h3>GPU Architecture</h3>
+                        <p>The Ultimate Guide to Building High-Performance Computing Systems</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Funding Section -->
+    <section class="section funding" id="funding">
+        <h2>Financement</h2>
+        
+        <div class="donation-counter">
+            <div class="counter-amount" id="donationAmount">€0</div>
+            <p>Collectés sur €50 objectif</p>
+        </div>
+
+        <div class="payment-options">
+            <!-- Paiements traditionnels -->
+            <div class="payment-card">
+                <h3>💳 Paiement Classique</h3>
+                <p>Soutenez le projet via les moyens de paiement traditionnels</p>
+                
+                <!-- STRIPE INTEGRATION -->
+                <button class="payment-button" onclick="payWithStripe()">
+                    Payer avec Stripe
+                </button>
+                <!-- 
+                INSTRUCTIONS STRIPE:
+                1. Créer un compte Stripe
+                2. Récupérer les clés API (pk_test_... et sk_test_...)
+                3. Remplacer YOUR_STRIPE_PUBLIC_KEY par votre clé publique
+                4. Configurer le webhook pour recevoir sur votre compte Boursorama
+                -->
+                
+                <!-- PAYPAL INTEGRATION -->
+                <button class="payment-button" onclick="payWithPayPal()">
+                    Payer avec PayPal
+                </button>
+                <!-- 
+                INSTRUCTIONS PAYPAL:
+                1. Créer un compte PayPal Business
+                2. Générer les boutons de paiement depuis PayPal
+                3. Lier à votre compte Boursorama via PayPal
+                -->
+                
+                <!-- TIPEEE INTEGRATION -->
+                <button class="payment-button" onclick="payWithTipeee()">
+                    Soutenir sur Tipeee
+                </button>
+                <!--
+                INSTRUCTIONS TIPEEE:
+                1. Créer une page Tipeee
+                2. Remplacer YOUR_TIPEEE_URL par votre URL Tipeee
+                3. Configurer les virements vers Boursorama
+                -->
+            </div>
+
+            <!-- Crypto payments -->
+            <div class="payment-card">
+                <h3>₿ Cryptomonnaies</h3>
+                <p>Paiement instantané et sécurisé via blockchain</p>
+                
+                <!-- ETHEREUM/METAMASK -->
+                <button class="payment-button" onclick="payWithMetaMask()">
+                    Payer avec MetaMask (ETH)
+                </button>
+                <div class="crypto-address">
+                    ETH: 0x742d35Cc6Bf8fE4D42f87887Fddd7Bf7b5B1c123
+                    <!-- REMPLACER par votre adresse Ethereum -->
+                </div>
+                
+                <!-- SOLANA/PHANTOM -->
+                <button class="payment-button" onclick="payWithPhantom()">
+                    Payer avec Phantom (SOL)
+                </button>
+                <div class="crypto-address">
+                    SOL: 9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM
+                    <!-- REMPLACER par votre adresse Solana -->
+                </div>
+
+                <!-- BITCOIN QR CODE -->
+                <div style="margin-top: 20px;">
+                    <p><strong>Bitcoin (BTC):</strong></p>
+                    <div class="crypto-address">
+                        bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh
+                        <!-- REMPLACER par votre adresse Bitcoin -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thank you section -->
+        <div class="thank-you">
+            <h3>💝 Merci à tous nos donateurs !</h3>
+            <p>Votre générosité permet de concrétiser ce projet éducatif. Chaque contribution, petite ou grande, nous rapproche de notre objectif.</p>
+            <p><strong>Ensemble, construisons l'avenir de l'apprentissage hardware !</strong></p>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="contact-form">
+            <h3>📧 Nous contacter</h3>
+            <form onsubmit="sendEmail(event)">
+                <div class="form-group">
+                    <input type="text" placeholder="Votre nom" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="Votre email" required>
+                </div>
+                <div class="form-group">
+                    <textarea placeholder="Votre message" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="payment-button">Envoyer le message</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Bibliothèque Hardware. Tous droits réservés.</p>
+        <div>
+            <a href="https://github.com/VOTRE_USERNAME/bibliotheque-hardware" target="_blank">GitHub</a>
+            <a href="#mentions">Mentions Légales</a>
+            <a href="#privacy">Politique de Confidentialité</a>
+        </div>
+    </footer>
+
+    <script>
+        // Animation du compteur de dons
+        function animateCounter() {
+            const counter = document.getElementById('donationAmount');
+            const target = 15; // Montant actuel collecté
+            let current = 0;
+            const increment = target / 100;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                counter.textContent = `€${Math.round(current)}`;
+            }, 30);
+        }
+
+        // Fonction de paiement Stripe
+        async function payWithStripe() {
+            // CONFIGURATION STRIPE
+            const stripe = Stripe('pk_test_YOUR_STRIPE_PUBLIC_KEY'); // REMPLACER
+            
+            try {
+                const response = await fetch('/create-payment-intent', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        amount: 1000, // 10€ en centimes
+                        currency: 'eur',
+                    }),
+                });
+                
+                const { client_secret } = await response.json();
+                
+                const { error } = await stripe.confirmCardPayment(client_secret, {
+                    payment_method: {
+                        card: elements.getElement('card'),
+                        billing_details: {
+                            name: 'Donateur',
+                        },
+                    }
+                });
+                
+                if (error) {
+                    console.error('Erreur Stripe:', error);
+                    alert('Erreur de paiement: ' + error.message);
+                } else {
+                    alert('Paiement réussi ! Merci pour votre soutien.');
+                    updateDonationCounter();
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('Service temporairement indisponible');
+            }
+        }
+
+        // Fonction de paiement PayPal
+        function payWithPayPal() {
+            // CONFIGURATION PAYPAL
+            const paypalUrl = 'https://www.paypal.com/donate/?business=VOTRE_EMAIL_PAYPAL&amount=10&currency_code=EUR';
+            window.open(paypalUrl, '_blank');
+        }
+
+        // Fonction Tipeee
+        function payWithTipeee() {
+            // REMPLACER par votre URL Tipeee
+            window.open('https://www.tipeee.com/VOTRE_PAGE_TIPEEE', '_blank');
+        }
+
+        // Fonction MetaMask (Ethereum)
+        async function payWithMetaMask() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    await ethereum.request({ method: 'eth_requestAccounts' });
+                    const web3 = new Web3(window.ethereum);
+                    const accounts = await web3.eth.getAccounts();
+                    
+                    const transaction = {
+                        from: accounts[0],
+                        to: '0x742d35Cc6Bf8fE4D42f87887Fddd7Bf7b5B1c123', // VOTRE ADRESSE ETH
+                        value: web3.utils.toWei('0.01', 'ether'), // 0.01 ETH
+                        gas: 21000,
+                    };
+                    
+                    const txHash = await web3.eth.sendTransaction(transaction);
+                    alert('Transaction envoyée ! Hash: ' + txHash.transactionHash);
+                    updateDonationCounter();
+                } catch (error) {
+                    console.error('Erreur MetaMask:', error);
+                    alert('Erreur de transaction');
+                }
+            } else {
+                alert('MetaMask non détecté. Veuillez installer MetaMask.');
+            }
+        }
+
+        // Fonction Phantom (Solana)
+        async function payWithPhantom() {
+            if (window.solana && window.solana.isPhantom) {
+                try {
+                    const resp = await window.solana.connect();
+                    const connection = new solanaWeb3.Connection('https://api.mainnet-beta.solana.com');
+                    
+                    const transaction = new solanaWeb3.Transaction().add(
+                        solanaWeb3.SystemProgram.transfer({
+                            fromPubkey: resp.publicKey,
+                            toPubkey: new solanaWeb3.PublicKey('9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM'),
+                            lamports: 10000000, // 0.01 SOL
+                        })
+                    );
+                    
+                    const signature = await window.solana.signAndSendTransaction(transaction);
+                    alert('Transaction Solana envoyée ! Signature: ' + signature.signature);
+                    updateDonationCounter();
+                } catch (error) {
+                    console.error('Erreur Phantom:', error);
+                    alert('Erreur de transaction Solana');
+                }
+            } else {
+                alert('Phantom Wallet non détecté. Veuillez installer Phantom.');
+            }
+        }
+
+        // Mise à jour du compteur
+        function updateDonationCounter() {
+            // Simuler l'ajout d'un don
+            const counter = document.getElementById('donationAmount');
+            const current = parseInt(counter.textContent.replace('€', ''));
+            const newAmount = current + 10;
+            counter.textContent = `€${newAmount}`;
+            
+            // Animation de succès
+            counter.style.transform = 'scale(1.2)';
+            counter.style.color = '#4ecdc4';
+            setTimeout(() => {
+                counter.style.transform = 'scale(1)';
+                counter.style.color = 'white';
+            }, 1000);
+        }
+
+        // Fonction d'envoi d'email
+        function sendEmail(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            
+            // CONFIGURATION EMAILJS ou backend
+            // Pour l'instant, simulation
+            alert('Message envoyé ! Nous vous répondrons dans les plus brefs délais.');
+            form.reset();
+            
+            // POUR IMPLEMENTATION RÉELLE:
+            // 1. Utiliser EmailJS: https://www.emailjs.com/
+            // 2. Ou créer un backend avec Node.js/Express
+            // 3. Ou utiliser un service comme Formspree
+        }
+
+        // Smooth scroll pour les liens
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Animation au scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observer les cartes de paiement
+        document.querySelectorAll('.payment-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(50px)';
+            card.style.transition = 'all 0.6s ease';
+            observer.observe(card);
+        });
+
+        // Démarrer l'animation du compteur au chargement
+        window.addEventListener('load', () => {
+            setTimeout(animateCounter, 1000);
+        });
+
+        // Gestion des erreurs JavaScript
+        window.addEventListener('error', (e) => {
+            console.error('Erreur JavaScript:', e.error);
+        });
+    </script>
+
+    <!-- Scripts externes pour crypto (à décommenter selon besoins) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4/web3.min.js"></script>
+    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+
+</body>
+</html>
