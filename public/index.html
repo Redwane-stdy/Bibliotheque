@@ -500,7 +500,7 @@
 
             <!-- Crypto payments -->
             <div class="payment-card">
-                <h3>₿ Cryptomonnaies</h3>
+                <h3>Cryptomonnaies</h3>
                 <p>Paiement instantané et sécurisé via blockchain</p>
                 
                 <!-- ETHEREUM/METAMASK -->
@@ -647,7 +647,7 @@ async function payWithMetaMask() {
             // Création de la transaction
             const transaction = {
                 from: accounts[0],
-                to: '0xa3fa920e528264651ef7d4082bdf2772059fd347', // ton adresse ETH ici
+                to: '0xa3fa920e528264651ef7d4082bdf2772059fd347', 
                 value: web3.utils.toWei(montantETH.toString(), 'ether'),
                 gas: 21000,
             };
